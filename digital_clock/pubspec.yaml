@@ -8,6 +8,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flare_flutter: ^1.8.3
   flutter_clock_helper:
     path: ../flutter_clock_helper
   cupertino_icons: ^0.1.2
@@ -22,3 +23,10 @@ flutter:
     - family: PressStart2P
       fonts:
         - asset: third_party/PressStart2P-Regular.ttf
+    - family: Roboto
+      fonts:
+        - asset: third_party/Roboto-Regular.ttf
+  assets:
+    - bear.flr
+    - lottie.flr
+    - lake.flr
