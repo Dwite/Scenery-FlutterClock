@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:digital_clock/dayNightController.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -44,11 +45,13 @@ class DigitalClock extends StatefulWidget {
 class _DigitalClockState extends State<DigitalClock> {
   DateTime _dateTime = DateTime.now();
   Timer _timer;
-  bool isDateSeparatorVisible = true;
+  bool _isDateSeparatorVisible = true;
+  DayNightController _dayNightController;
 
   @override
   void initState() {
     super.initState();
+    _dayNightController = DayNightController(3);
     widget.model.addListener(_updateModel);
     _updateTime();
     _updateModel();
@@ -80,7 +83,7 @@ class _DigitalClockState extends State<DigitalClock> {
   void _updateTime() {
     setState(() {
       _dateTime = DateTime.now();
-      isDateSeparatorVisible = !isDateSeparatorVisible;
+      _isDateSeparatorVisible = !_isDateSeparatorVisible;
       // Update once per minute. If you want to update every second, use the
       // following code.
       /*_timer = Timer(
@@ -106,7 +109,7 @@ class _DigitalClockState extends State<DigitalClock> {
     final hour =
         DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
     final minute = DateFormat('mm').format(_dateTime);
-    final fontSize = MediaQuery.of(context).size.width / 10;
+    final fontSize = MediaQuery.of(context).size.width / 8;
     final offset = MediaQuery.of(context).size.width / 2;
     final topOffset = MediaQuery.of(context).size.height / 2;
     final defaultStyle = TextStyle(
@@ -114,44 +117,32 @@ class _DigitalClockState extends State<DigitalClock> {
 
     List<Widget> dateWidgets = [];
     dateWidgets.add(Text("$hour"));
-    dateWidgets.add(Visibility(
-      child: Text(":",
-          style: TextStyle(
-              color: colors[_Element.text],
-              fontFamily: 'Roboto',
-              fontSize: fontSize / 1.5)),
-      visible: isDateSeparatorVisible,
-      maintainSize: true,
-      maintainAnimation: true,
-      maintainState: true,
-    ));
+    dateWidgets.add(Text(":"));
     dateWidgets.add(Text("$minute"));
 
     return Container(
       color: colors[_Element.background],
-      child: Center(
-        child: DefaultTextStyle(
-          style: defaultStyle,
-          child: Stack(
-            children: <Widget>[
-              FlareActor(
-                "lake.flr",
-                shouldClip: false,
-                alignment: Alignment.center,
-                fit: BoxFit.contain,
-                animation: "idle",
-              ),
-              Positioned.fill(
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: dateWidgets,
-                    )),
-              ),
-            ],
-          ),
+      child: DefaultTextStyle(
+        style: defaultStyle,
+        child: Stack(
+          children: <Widget>[
+            FlareActor(
+              "Day_Night.flr",
+              shouldClip: false,
+              alignment: Alignment.center,
+              fit: BoxFit.cover,
+              controller: _dayNightController,
+            ),
+            Positioned.fill(
+              child: Align(
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: dateWidgets,
+                  )),
+            ),
+          ],
         ),
       ),
     );
