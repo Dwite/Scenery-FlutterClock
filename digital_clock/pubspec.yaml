@@ -27,7 +27,4 @@ flutter:
       fonts:
         - asset: third_party/Roboto-Regular.ttf
   assets:
-    - bear.flr
-    - lottie.flr
-    - lake.flr
     - Day_Night.flr

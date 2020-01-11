@@ -12,6 +12,8 @@ class DayNightController extends FlareTimeControls {
 
   @override
   bool advance(FlutterActorArtboard artboard, double elapsed) {
+    //We divide elapsed time by 3600 to run 24sec animation for 24h
+    //final animationElapse = elapsed / 10;
     super.advance(artboard, elapsed);
     return true;
   }

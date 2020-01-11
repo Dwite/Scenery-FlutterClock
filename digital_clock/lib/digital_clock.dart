@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:digital_clock/dayNightController.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -47,6 +48,10 @@ class _DigitalClockState extends State<DigitalClock> {
   Timer _timer;
   bool _isDateSeparatorVisible = true;
   DayNightController _dayNightController;
+  DateFormat _meridianFormatter = DateFormat('a');
+  DateFormat _minutesFormatter = DateFormat('mm');
+  DateFormat _hours24Formatter = DateFormat('HH');
+  DateFormat _hours12Formatter = DateFormat('hh');
 
   @override
   void initState() {
@@ -106,19 +111,28 @@ class _DigitalClockState extends State<DigitalClock> {
     final colors = Theme.of(context).brightness == Brightness.light
         ? _lightTheme
         : _darkTheme;
-    final hour =
-        DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
-    final minute = DateFormat('mm').format(_dateTime);
     final fontSize = MediaQuery.of(context).size.width / 8;
-    final offset = MediaQuery.of(context).size.width / 2;
-    final topOffset = MediaQuery.of(context).size.height / 2;
     final defaultStyle = TextStyle(
         color: colors[_Element.text], fontFamily: 'Roboto', fontSize: fontSize);
+
+    final hoursFormatter =
+        widget.model.is24HourFormat ? _hours24Formatter : _hours12Formatter;
+    final hour = hoursFormatter.format(_dateTime);
+    final minute = _minutesFormatter.format(_dateTime);
 
     List<Widget> dateWidgets = [];
     dateWidgets.add(Text("$hour"));
     dateWidgets.add(Text(":"));
     dateWidgets.add(Text("$minute"));
+
+    if (!widget.model.is24HourFormat) {
+      final meridian = _meridianFormatter.format(_dateTime);
+      dateWidgets.add(Text(meridian,
+          style: TextStyle(
+              color: colors[_Element.text],
+              fontFamily: 'Roboto',
+              fontSize: fontSize / 2)));
+    }
 
     return Container(
       color: colors[_Element.background],
@@ -138,7 +152,8 @@ class _DigitalClockState extends State<DigitalClock> {
                   alignment: Alignment.center,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
                     children: dateWidgets,
                   )),
             ),
