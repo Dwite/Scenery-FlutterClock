@@ -47,6 +47,7 @@ class _DigitalClockState extends State<DigitalClock> {
   DateTime _dateTime = DateTime.now();
   Timer _timer;
   bool _isDateSeparatorVisible = true;
+  bool _isAnimationStateResetRequired = false;
   DayNightController _dayNightController;
   DateFormat _meridianFormatter = DateFormat('a');
   DateFormat _minutesFormatter = DateFormat('mm');
@@ -56,7 +57,7 @@ class _DigitalClockState extends State<DigitalClock> {
   @override
   void initState() {
     super.initState();
-    _dayNightController = DayNightController(3);
+    _dayNightController = DayNightController(_dateTime);
     widget.model.addListener(_updateModel);
     _updateTime();
     _updateModel();
@@ -87,7 +88,13 @@ class _DigitalClockState extends State<DigitalClock> {
 
   void _updateTime() {
     setState(() {
-      _dateTime = DateTime.now();
+      final currentTime = DateTime.now();
+
+      // we want to reset the animation when daylight saving time happens
+      _isAnimationStateResetRequired =
+          currentTime.difference(_dateTime).inMinutes > 2;
+
+      _dateTime = currentTime;
       _isDateSeparatorVisible = !_isDateSeparatorVisible;
       // Update once per minute. If you want to update every second, use the
       // following code.
@@ -132,6 +139,10 @@ class _DigitalClockState extends State<DigitalClock> {
               color: colors[_Element.text],
               fontFamily: 'Roboto',
               fontSize: fontSize / 2)));
+    }
+
+    if (_isAnimationStateResetRequired) {
+      _dayNightController.updateCurrentTime(_dateTime);
     }
 
     return Container(

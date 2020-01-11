@@ -3,12 +3,12 @@ import 'package:flare_dart/math/mat2d.dart';
 import 'package:flare_flutter/flare.dart';
 
 class DayNightController extends FlareTimeControls {
-  // Storage for our matrix to get global Flutter coordinates into Flare world coordinates.
+  static const int animationLength = 24;
+
   Mat2D _globalToFlareWorld = Mat2D();
+  DateTime _currentTime;
 
-  double _elapsed;
-
-  DayNightController(this._elapsed);
+  DayNightController(this._currentTime);
 
   @override
   bool advance(FlutterActorArtboard artboard, double elapsed) {
@@ -22,11 +22,7 @@ class DayNightController extends FlareTimeControls {
   @override
   void initialize(FlutterActorArtboard artboard) {
     super.initialize(artboard);
-    play("Day/Nigh", time: _elapsed);
-  }
-
-  onCompleted(String name) {
-    //play("idle");
+    play("Day/Nigh", time: getAnimationStartTime(_currentTime));
   }
 
   // Called by [FlareActor] when the view transform changes.
@@ -34,5 +30,20 @@ class DayNightController extends FlareTimeControls {
   @override
   void setViewTransform(Mat2D viewTransform) {
     Mat2D.invert(_globalToFlareWorld, viewTransform);
+  }
+
+  void updateCurrentTime(DateTime currentTime) {
+    _currentTime = currentTime;
+    var animationStartTime = getAnimationStartTime(_currentTime);
+    play("Day/Nigh", time: animationStartTime);
+  }
+
+  double getAnimationStartTime(DateTime currentTime) {
+    final minutesInCurrentDay =
+        (currentTime.hour * Duration.minutesPerHour) + currentTime.minute;
+    final currentDayCompletionPercent =
+        minutesInCurrentDay / Duration.minutesPerDay;
+
+    return animationLength * currentDayCompletionPercent;
   }
 }
