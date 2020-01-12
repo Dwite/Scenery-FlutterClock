@@ -134,7 +134,7 @@ class _DigitalClockState extends State<DigitalClock> {
 
     if (!widget.model.is24HourFormat) {
       final meridian = _meridianFormatter.format(_dateTime);
-      timeWidgets.add(Text(meridian,
+      timeWidgets.add(Text(" $meridian",
           style: TextStyle(
               color: colors[_Element.text],
               fontFamily: 'Roboto',
@@ -147,29 +147,26 @@ class _DigitalClockState extends State<DigitalClock> {
 
     return Container(
       color: colors[_Element.background],
-      child: DefaultTextStyle(
-        style: defaultStyle,
-        child: Stack(
-          children: <Widget>[
-            FlareActor(
-              "Day_Night.flr",
-              shouldClip: false,
+      child: Stack(
+        children: <Widget>[
+          FlareActor(
+            "Day_Night.flr",
+            shouldClip: false,
+            alignment: Alignment.center,
+            fit: BoxFit.cover,
+            controller: _dayNightController,
+          ),
+          Align(
               alignment: Alignment.center,
-              fit: BoxFit.cover,
-              controller: _dayNightController,
-            ),
-            Positioned.fill(
-              child: Align(
-                  alignment: Alignment.center,
+              child: DefaultTextStyle(
+                  style: defaultStyle,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: timeWidgets,
-                  )),
-            ),
-          ],
-        ),
+                  ))),
+        ],
       ),
     );
   }
