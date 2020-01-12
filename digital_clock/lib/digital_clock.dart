@@ -127,14 +127,14 @@ class _DigitalClockState extends State<DigitalClock> {
     final hour = hoursFormatter.format(_dateTime);
     final minute = _minutesFormatter.format(_dateTime);
 
-    List<Widget> dateWidgets = [];
-    dateWidgets.add(Text("$hour"));
-    dateWidgets.add(Text(":"));
-    dateWidgets.add(Text("$minute"));
+    List<Widget> timeWidgets = [];
+    timeWidgets.add(Text("$hour"));
+    timeWidgets.add(Text(":"));
+    timeWidgets.add(Text("$minute"));
 
     if (!widget.model.is24HourFormat) {
       final meridian = _meridianFormatter.format(_dateTime);
-      dateWidgets.add(Text(meridian,
+      timeWidgets.add(Text(meridian,
           style: TextStyle(
               color: colors[_Element.text],
               fontFamily: 'Roboto',
@@ -165,7 +165,7 @@ class _DigitalClockState extends State<DigitalClock> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
-                    children: dateWidgets,
+                    children: timeWidgets,
                   )),
             ),
           ],
