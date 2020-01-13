@@ -248,10 +248,10 @@ class _DigitalClockState extends State<DigitalClock> {
       stops = [(10 - celsiusTemperature) / 10, 1.0];
     } else if (celsiusTemperature >= -10) {
       colors = [
-        theme[_TemperatureStatus.cold],
-        theme[_TemperatureStatus.neutral]
+        theme[_TemperatureStatus.chilly],
+        theme[_TemperatureStatus.cold]
       ];
-      stops = [(10 + celsiusTemperature) / 10, 1.0];
+      stops = [((-10 - celsiusTemperature) / 10).abs(), 1.0];
     } else {
       colors = [theme[_TemperatureStatus.cold], theme[_TemperatureStatus.cold]];
       stops = [1.0, 1.0];
