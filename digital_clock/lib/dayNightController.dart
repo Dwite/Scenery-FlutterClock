@@ -1,6 +1,7 @@
 import 'package:digital_clock/FlareTimeControls.dart';
 import 'package:flare_dart/math/mat2d.dart';
 import 'package:flare_flutter/flare.dart';
+import 'package:flutter_clock_helper/model.dart';
 
 class DayNightController extends FlareTimeControls {
   static const int animationLength = 24;
@@ -8,7 +9,12 @@ class DayNightController extends FlareTimeControls {
   Mat2D _globalToFlareWorld = Mat2D();
   DateTime _currentTime;
 
-  DayNightController(this._currentTime);
+  WeatherCondition get weatherCondition => _weatherCondition;
+  WeatherCondition _weatherCondition;
+
+  DayNightController(this._currentTime, this._weatherCondition);
+
+  FlutterActorArtboard _artboard;
 
   @override
   bool advance(FlutterActorArtboard artboard, double elapsed) {
@@ -22,7 +28,56 @@ class DayNightController extends FlareTimeControls {
   @override
   void initialize(FlutterActorArtboard artboard) {
     super.initialize(artboard);
+    _artboard = artboard;
     play("Day/Nigh", time: getAnimationStartTime(_currentTime));
+
+    String weatherAnimationName = getWeatherAnimationName(_weatherCondition);
+
+    if (weatherAnimationName.isNotEmpty) {
+      play(weatherAnimationName, time: getAnimationStartTime(_currentTime));
+    }
+  }
+
+  String getWeatherAnimationName(WeatherCondition weatherCondition) {
+    String weatherAnimationName = "";
+
+    switch (weatherCondition) {
+      case WeatherCondition.cloudy:
+        {
+          weatherAnimationName = "cloud";
+          break;
+        }
+      case WeatherCondition.foggy:
+        {
+          break;
+        }
+      case WeatherCondition.rainy:
+        {
+          break;
+        }
+      case WeatherCondition.snowy:
+        {
+          break;
+        }
+      case WeatherCondition.sunny:
+        {
+          break;
+        }
+      case WeatherCondition.thunderstorm:
+        {
+          break;
+        }
+      case WeatherCondition.windy:
+        {
+          break;
+        }
+      default:
+        {
+          break;
+        }
+    }
+
+    return weatherAnimationName;
   }
 
   // Called by [FlareActor] when the view transform changes.
@@ -32,10 +87,10 @@ class DayNightController extends FlareTimeControls {
     Mat2D.invert(_globalToFlareWorld, viewTransform);
   }
 
-  void updateCurrentTime(DateTime currentTime) {
+  void resetAnimation(DateTime currentTime, WeatherCondition weatherCondition) {
     _currentTime = currentTime;
-    var animationStartTime = getAnimationStartTime(_currentTime);
-    play("Day/Nigh", time: animationStartTime);
+    _weatherCondition = weatherCondition;
+    initialize(_artboard);
   }
 
   double getAnimationStartTime(DateTime currentTime) {

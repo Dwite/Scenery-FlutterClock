@@ -60,8 +60,10 @@ class _DigitalClockState extends State<DigitalClock> {
   DateTime _dateTime = DateTime.now();
   Timer _timer;
   bool _isDateSeparatorVisible = true;
+
   bool _isAnimationStateResetRequired = false;
   DayNightController _dayNightController;
+
   DateFormat _meridianFormatter = DateFormat('a');
   DateFormat _minutesFormatter = DateFormat('mm');
   DateFormat _hours24Formatter = DateFormat('HH');
@@ -71,7 +73,8 @@ class _DigitalClockState extends State<DigitalClock> {
   @override
   void initState() {
     super.initState();
-    _dayNightController = DayNightController(_dateTime);
+    _dayNightController =
+        DayNightController(_dateTime, widget.model.weatherCondition);
     widget.model.addListener(_updateModel);
     _updateTime();
     _updateModel();
@@ -151,8 +154,12 @@ class _DigitalClockState extends State<DigitalClock> {
       fontSize,
     );
 
-    if (_isAnimationStateResetRequired) {
-      _dayNightController.updateCurrentTime(_dateTime);
+    var weatherCondition = widget.model.weatherCondition;
+    var isWeatherConditionChanged =
+        _dayNightController.weatherCondition != weatherCondition;
+
+    if (_isAnimationStateResetRequired || isWeatherConditionChanged) {
+      _dayNightController.resetAnimation(_dateTime, weatherCondition);
     }
 
     return Container(
