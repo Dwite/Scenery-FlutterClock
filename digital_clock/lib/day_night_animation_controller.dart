@@ -8,7 +8,7 @@ import 'package:flare_flutter/flare.dart';
 
 class DayNightAnimationController extends FlareAnimationTimeController {
   static const int _animationLengthSeconds = 24;
-  static const _animationName = "Day/Nigh";
+  static const _animationName = "midnight";
 
   Mat2D _globalToFlareWorld = Mat2D();
   DateTime _animationInitialDateTime;

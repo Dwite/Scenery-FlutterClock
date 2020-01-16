@@ -110,6 +110,7 @@ class _DigitalClockState extends State<DigitalClock> {
         : _darkTheme;
     final fontSizeDivider = model.is24HourFormat ? 3 : 4;
     final fontSize = MediaQuery.of(context).size.width / fontSizeDivider;
+    final weatherAnimationSize = MediaQuery.of(context).size.width / 6;
     final defaultStyle = TextStyle(
       color: colors[_Element.text],
       fontFamily: 'Baloo',
@@ -128,6 +129,9 @@ class _DigitalClockState extends State<DigitalClock> {
       _dayNightController.resetAnimationTo(_dateTime);
     }
 
+    final weatherArtboardName =
+        _provideWeatherArtboardName(model.weatherCondition);
+
     return Container(
       color: colors[_Element.background],
       child: Stack(
@@ -138,6 +142,19 @@ class _DigitalClockState extends State<DigitalClock> {
             alignment: Alignment.center,
             fit: BoxFit.cover,
             controller: _dayNightController,
+          ),
+          SizedBox(
+            width: weatherAnimationSize,
+            height: weatherAnimationSize,
+            child: FlareActor(
+              "daily.flr",
+              animation: "anim",
+              artboard: weatherArtboardName,
+              shouldClip: false,
+              alignment: Alignment.center,
+              sizeFromArtboard: false,
+              fit: BoxFit.scaleDown,
+            ),
           ),
           Align(
             alignment: Alignment.center,
@@ -182,5 +199,26 @@ class _DigitalClockState extends State<DigitalClock> {
     );
 
     return meridianTextWidget;
+  }
+
+  String _provideWeatherArtboardName(WeatherCondition weatherCondition) {
+    switch (weatherCondition) {
+      case WeatherCondition.cloudy:
+        return "weather-cloudy";
+      case WeatherCondition.foggy:
+        return "weather-foggy";
+      case WeatherCondition.rainy:
+        return "weather-rainy";
+      case WeatherCondition.snowy:
+        return "weather-snowy";
+      case WeatherCondition.sunny:
+        return "weather-sunny";
+      case WeatherCondition.thunderstorm:
+        return "weather-thunderstorm";
+      case WeatherCondition.windy:
+        return "weather-windy";
+    }
+
+    return "weather-sunny";
   }
 }
