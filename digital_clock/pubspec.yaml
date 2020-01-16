@@ -20,8 +20,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: Bowlby
+    - family: Baloo
       fonts:
-        - asset: third_party/BowlbyOne-Regular.ttf
+        - asset: third_party/Baloo-Regular.ttf
   assets:
     - daily.flr

@@ -1,3 +1,7 @@
+// Copyright 2019 Valerii Kuznietsov. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:digital_clock/flare_animation_time_controller.dart';
 import 'package:flare_dart/math/mat2d.dart';
 import 'package:flare_flutter/flare.dart';

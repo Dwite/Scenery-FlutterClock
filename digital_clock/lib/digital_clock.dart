@@ -1,4 +1,4 @@
-// Copyright 2019 The Chromium Authors. All rights reserved.
+// Copyright 2019 Valerii Kuznietsov. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -20,7 +20,7 @@ enum _Element {
 }
 
 final _lightTheme = {
-  _Element.background: Color(0xFF81B3FE),
+  _Element.background: Colors.black,
   _Element.text: Colors.white,
 };
 
@@ -108,22 +108,20 @@ class _DigitalClockState extends State<DigitalClock> {
     final colors = Theme.of(context).brightness == Brightness.light
         ? _lightTheme
         : _darkTheme;
-    final fontSizeDivider = model.is24HourFormat ? 4 : 5;
+    final fontSizeDivider = model.is24HourFormat ? 3 : 4;
     final fontSize = MediaQuery.of(context).size.width / fontSizeDivider;
     final defaultStyle = TextStyle(
       color: colors[_Element.text],
-      fontFamily: 'Bowlby',
+      fontFamily: 'Baloo',
       fontSize: fontSize,
     );
 
     DateFormat minutesFormatter = DateFormat('mm');
-    DateFormat dateFormat = DateFormat('EEEE, MMMM dd');
 
     final hoursFormatterPattern = model.is24HourFormat ? 'HH' : 'hh';
     final hoursFormatter = DateFormat(hoursFormatterPattern);
     final hour = hoursFormatter.format(_dateTime);
     final minute = minutesFormatter.format(_dateTime);
-    final date = dateFormat.format(_dateTime);
     List<Widget> timeWidgets = _createTimeWidgets(hour, minute, fontSize);
 
     if (_shouldResetAnimationState) {
@@ -143,30 +141,14 @@ class _DigitalClockState extends State<DigitalClock> {
           ),
           Align(
             alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                DefaultTextStyle(
-                  style: defaultStyle,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: timeWidgets,
-                  ),
-                ),
-                Stack(
-                  children: <Widget>[
-                    Text(
-                      "$date",
-                      style: TextStyle(
-                          color: colors[_Element.text],
-                          fontFamily: 'Bowlby',
-                          fontSize: fontSize / 5),
-                    ),
-                  ],
-                ),
-              ],
+            child: DefaultTextStyle(
+              style: defaultStyle,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: timeWidgets,
+              ),
             ),
           ),
         ],
@@ -181,17 +163,24 @@ class _DigitalClockState extends State<DigitalClock> {
     timeWidgets.add(Text("$minute"));
 
     if (!widget.model.is24HourFormat) {
-      final _meridianFormatter = DateFormat('a');
-      final meridian = _meridianFormatter.format(_dateTime);
-      timeWidgets.add(Text(
-        "$meridian",
-        style: TextStyle(
-          fontFamily: 'Bowlby',
-          fontSize: fontSize / 2,
-        ),
-      ));
+      Text meridianText = _createMeridianText(fontSize);
+      timeWidgets.add(meridianText);
     }
 
     return timeWidgets;
+  }
+
+  Text _createMeridianText(double fontSize) {
+    final _meridianFormatter = DateFormat('a');
+    final meridian = _meridianFormatter.format(_dateTime);
+    var meridianTextWidget = Text(
+      "$meridian",
+      style: TextStyle(
+        fontFamily: 'Baloo',
+        fontSize: fontSize / 2,
+      ),
+    );
+
+    return meridianTextWidget;
   }
 }
