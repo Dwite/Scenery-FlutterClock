@@ -5,12 +5,13 @@ import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controller.dart';
 
-/// [FlareControls] is a concrete implementation of the [FlareController].
+/// [FlareAnimationTimeController] is a concrete implementation of the [FlareController].
 ///
 /// This controller will provide some basic functionality, such as
 /// playing an animation, and advancing every frame. If multiple animations are
 /// playing at the same time, this controller will mix them.
-class FlareTimeControls extends FlareController {
+/// This controller supports starting animation from the specific time frame.
+class FlareAnimationTimeController extends FlareController {
   /// The current [FlutterActorArtboard].
   FlutterActorArtboard _artboard;
 

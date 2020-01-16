@@ -20,11 +20,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: PressStart2P
+    - family: Bowlby
       fonts:
-        - asset: third_party/PressStart2P-Regular.ttf
-    - family: Roboto
-      fonts:
-        - asset: third_party/Roboto-Regular.ttf
+        - asset: third_party/BowlbyOne-Regular.ttf
   assets:
-    - Day_Night.flr
+    - daily.flr
