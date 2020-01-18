@@ -30,9 +30,9 @@ final _darkTheme = {
 };
 
 class DigitalClock extends StatefulWidget {
-  const DigitalClock(this.model);
+  DigitalClock(this.model);
 
-  final ClockModel model;
+  ClockModel model;
 
   @override
   _DigitalClockState createState() => _DigitalClockState();
@@ -40,6 +40,8 @@ class DigitalClock extends StatefulWidget {
 
 class _DigitalClockState extends State<DigitalClock> {
   DateTime _dateTime = DateTime.now();
+  int currentHour = 0;
+  int currentMinute = 0;
   Timer _timer;
 
   bool _shouldResetAnimationState = false;
@@ -79,25 +81,61 @@ class _DigitalClockState extends State<DigitalClock> {
 
   void _updateTime() {
     setState(() {
-      final currentTime = DateTime.now();
+      if (currentMinute == 59) {
+        currentMinute = 0;
+        currentHour += 1;
+      } else {
+        currentMinute += 1;
+      }
+
+      if (currentHour == 24) {
+        currentHour = 0;
+      }
+
+      if (currentHour > 21) {
+        widget.model.weatherCondition = WeatherCondition.windy;
+      } else if (currentHour > 18) {
+        widget.model.weatherCondition = WeatherCondition.cloudy;
+      } else if (currentHour > 15) {
+        widget.model.weatherCondition = WeatherCondition.thunderstorm;
+      } else if (currentHour > 12) {
+        widget.model.weatherCondition = WeatherCondition.rainy;
+      } else if (currentHour > 9) {
+        widget.model.weatherCondition = WeatherCondition.snowy;
+      } else if (currentHour > 6) {
+        widget.model.weatherCondition = WeatherCondition.sunny;
+      } else if (currentHour > 3) {
+        widget.model.weatherCondition = WeatherCondition.foggy;
+      }
+
+      int minute = 0;
+      if (currentMinute % 10 == 0) {
+        minute = currentMinute;
+      } else {
+        minute = currentMinute - (currentMinute % 10);
+      }
+
+      final currentDateTime = DateTime.now();
+      final currentTime =
+          DateTime(currentDateTime.year, 0, 0, currentHour, minute, 0, 0, 0);
 
       // we need to reset the animation when daylight saving time happens
       _shouldResetAnimationState =
-          currentTime.difference(_dateTime).inMinutes > 2;
+          currentTime.difference(_dateTime).inMinutes > 20;
 
       _dateTime = currentTime;
       // Update once per minute.
-      _timer = Timer(
+      /*_timer = Timer(
         Duration(minutes: 1) -
             Duration(seconds: _dateTime.second) -
             Duration(milliseconds: _dateTime.millisecond),
         _updateTime,
-      );
-      // Update once per second
-      /*_timer = Timer(
-        Duration(seconds: 1) - Duration(milliseconds: _dateTime.millisecond),
-        _updateTime,
       );*/
+      // Update once per second
+      _timer = Timer(
+        Duration(milliseconds: 16),
+        _updateTime,
+      );
     });
   }
 
@@ -108,7 +146,7 @@ class _DigitalClockState extends State<DigitalClock> {
     final colors = Theme.of(context).brightness == Brightness.light
         ? _lightTheme
         : _darkTheme;
-    final fontSizeDivider = model.is24HourFormat ? 3 : 4;
+    final fontSizeDivider = model.is24HourFormat ? 4 : 5;
     final fontSize = MediaQuery.of(context).size.width / fontSizeDivider - 5;
     final weatherAnimationSize = MediaQuery.of(context).size.height / 4;
     final defaultStyle = TextStyle(

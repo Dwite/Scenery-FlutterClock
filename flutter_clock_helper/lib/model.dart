@@ -71,7 +71,7 @@ class ClockModel extends ChangeNotifier {
 
   /// Weather condition text for the current weather, for example  'cloudy'.
   WeatherCondition get weatherCondition => _weatherCondition;
-  WeatherCondition _weatherCondition = WeatherCondition.sunny;
+  WeatherCondition _weatherCondition = WeatherCondition.windy;
   set weatherCondition(WeatherCondition weatherCondition) {
     if (weatherCondition != _weatherCondition) {
       _weatherCondition = weatherCondition;
