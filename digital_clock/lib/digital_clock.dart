@@ -108,8 +108,8 @@ class _DigitalClockState extends State<DigitalClock> {
     final colors = Theme.of(context).brightness == Brightness.light
         ? _lightTheme
         : _darkTheme;
-    final fontSizeDivider = model.is24HourFormat ? 4 : 5;
-    final fontSize = MediaQuery.of(context).size.width / fontSizeDivider;
+    final fontSizeDivider = model.is24HourFormat ? 3 : 4;
+    final fontSize = MediaQuery.of(context).size.width / fontSizeDivider - 5;
     final weatherAnimationSize = MediaQuery.of(context).size.height / 4;
     final defaultStyle = TextStyle(
       color: colors[_Element.text],
