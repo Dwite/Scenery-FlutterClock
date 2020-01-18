@@ -93,11 +93,6 @@ class _DigitalClockState extends State<DigitalClock> {
             Duration(milliseconds: _dateTime.millisecond),
         _updateTime,
       );
-      // Update once per second
-      /*_timer = Timer(
-        Duration(seconds: 1) - Duration(milliseconds: _dateTime.millisecond),
-        _updateTime,
-      );*/
     });
   }
 
@@ -108,7 +103,7 @@ class _DigitalClockState extends State<DigitalClock> {
     final colors = Theme.of(context).brightness == Brightness.light
         ? _lightTheme
         : _darkTheme;
-    final fontSizeDivider = model.is24HourFormat ? 3 : 4;
+    final fontSizeDivider = model.is24HourFormat ? 4 : 5;
     final fontSize = MediaQuery.of(context).size.width / fontSizeDivider - 5;
     final weatherAnimationSize = MediaQuery.of(context).size.height / 4;
     final defaultStyle = TextStyle(
