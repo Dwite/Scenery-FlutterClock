@@ -138,28 +138,35 @@ class _DigitalClockState extends State<DigitalClock> {
             fit: BoxFit.cover,
             controller: _dayNightController,
           ),
-          SizedBox(
-            width: weatherAnimationSize,
-            height: weatherAnimationSize,
-            child: FlareActor(
-              "daily.flr",
-              animation: "anim",
-              artboard: weatherArtboardName,
-              shouldClip: false,
-              alignment: Alignment.center,
-              sizeFromArtboard: false,
-              fit: BoxFit.scaleDown,
+          Semantics(
+            readOnly: true,
+            label: "Weather and Temperature",
+            value: "${model.weatherString} ${model.temperatureString}",
+            child: SizedBox(
+              width: weatherAnimationSize,
+              height: weatherAnimationSize,
+              child: FlareActor(
+                "daily.flr",
+                animation: "anim",
+                artboard: weatherArtboardName,
+                shouldClip: false,
+                alignment: Alignment.center,
+                sizeFromArtboard: false,
+                fit: BoxFit.scaleDown,
+              ),
             ),
           ),
           Align(
             alignment: Alignment.center,
-            child: DefaultTextStyle(
-              style: defaultStyle,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: timeWidgets,
+            child: MergeSemantics(
+              child: DefaultTextStyle(
+                style: defaultStyle,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: timeWidgets,
+                ),
               ),
             ),
           ),
