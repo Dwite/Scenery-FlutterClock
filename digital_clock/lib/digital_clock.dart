@@ -39,8 +39,8 @@ class DigitalClock extends StatefulWidget {
 }
 
 class _DigitalClockState extends State<DigitalClock> {
-  DateTime _dateTime = DateTime.now();
   int currentHour = 0;
+  DateTime _dateTime = DateTime(2020, 0, 0, 0, 1, 0, 0, 0);
   int currentMinute = 0;
   Timer _timer;
 
@@ -133,7 +133,7 @@ class _DigitalClockState extends State<DigitalClock> {
       );*/
       // Update once per second
       _timer = Timer(
-        Duration(milliseconds: 16),
+        Duration(milliseconds: 14),
         _updateTime,
       );
     });
