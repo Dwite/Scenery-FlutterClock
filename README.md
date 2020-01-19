@@ -1,15 +1,13 @@
 # Flutter Clock
 
-Welcome to Flutter Clock!
+This is a Scenery Clock prepared for #FlutterClock challenge. See [flutter.dev/clock](https://flutter.dev/clock) to know more about the dev challenge.
 
-See [flutter.dev/clock](https://flutter.dev/clock) for how to get started, submission requirements, contest rules, and FAQs.
+# Scenery Clock
+Scenery Clock uses storytelling to visualise what is the current time of day and weather with beautiful animations and
+ immersive day-night transitions.
+ 
+Checking the time or weather never was so pleasant and emotionally connected before.
 
-See a [live demo](https://maryx.github.io/flutter_clock) with Flutter for Web!
-
-Example [Analog Clock](analog_clock)
-
-<img src='analog_clock/analog.gif' width='350'>
-
-Example [Digital Clock](digital_clock)
+[Scenery Clock](digital_clock)
 
 <img src='digital_clock/digital.gif' width='350'>
