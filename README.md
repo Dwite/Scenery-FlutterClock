@@ -1,4 +1,6 @@
 # Flutter Clock
+![visitors](https://visitor-badge.glitch.me/badge?page_id=dwite.scenery-flutterclock-visitor-badge)
+
 
 This is a Scenery Clock prepared for #FlutterClock challenge. See [flutter.dev/clock](https://flutter.dev/clock) to know more about the dev challenge.
 
